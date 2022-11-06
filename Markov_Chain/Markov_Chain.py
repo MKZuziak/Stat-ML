@@ -22,10 +22,13 @@ class Markov_Chain:
     def show_Q(self):
         print(self.transition_matrix)
 
-    def simulate(self, nsim=10**4):
+    def simulate(self, nsim=10**4, starting_distribution=None):
         states = len(self.transition_matrix) - 1
         X = np.zeros(nsim, dtype=int)
-        X[0] = np.random.randint(low = 0, high = states, size = 1, dtype = int)
+        if starting_distribution is None:
+            X[0] = np.random.randint(low = 0, high = states, size = 1, dtype = int)
+        else:
+            X[0] = np.random.choice(a=(states+1), size=1, p=starting_distribution)
         for i in range(1, nsim):
             X[i] = np.random.choice(a=(states+1), size=1, p=self.transition_matrix[X[(i-1)], :])
         _, frequency = np.unique(X, return_counts=True)
