@@ -5,8 +5,11 @@ import numpy as np
 class Markov_Chain:
     def __init__(self, transition_matrix, labels=None) -> None:
         self.transition_matrix = transition_matrix
+        # I) 1st assertion - passed parameter is a 2-dimensional array (a Matrix)
         assert self.transition_matrix.ndim == 2 # Making test for a correct transition matrix Q.
-        #TODO: Assert that transition_matrix is a proper MxM transition matrix.
+
+        # II) 2nd assertion - passed matrix is a square matrix:
+        assert self.transition_matrix.shape[0] == self.transition_matrix.shape[1]
        
         if False in np.isclose([self.transition_matrix.sum(axis=1)], [1.0], rtol=1e-05, atol=1e-08): # Checking whether each row is summing up to 1.
             print("Warning! One or more rows in the transition matrix were not summing up to 1.")
@@ -35,10 +38,16 @@ class Markov_Chain:
         stat_dist = frequency / len(X)
         return stat_dist
 
+    def simulate_2(self, nsim=50):
+        Q = self.transition_matrix
+        for i in range(nsim):
+            Q_n = Q.dot(Q)
+            Q = Q_n
+        return Q
 
-matrix= np.array([[1/3, 1/3, 1/3],
-                [1/3, 1/3, 1/3],
-                [1/3, 1/3, 1/3]])
-labels = ["Rainy", "Sunny", "I don't know"]
-chain = Markov_Chain(matrix, labels)
-chain.show_Q()
+matrix= np.array([[2/5, 3/5], [3/7, 4/7]])
+chain = Markov_Chain(matrix)
+stat_dist = chain.simulate()
+stat_dist2 = chain.simulate_2()
+
+print(stat_dist, stat_dist2)

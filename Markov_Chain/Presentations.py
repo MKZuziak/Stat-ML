@@ -13,12 +13,9 @@ def once_s_always_s(Q):
     chain = Markov_Chain.Markov_Chain(Q)
     stat_dist = chain.simulate(10**5)
     print("The stationary distribution of the chain after 10^5 runs is close: {}".format(stat_dist))
-    print("Given the reversability condition is satisfied, sQ = s.")
     print("We can multiply {} and {} to receive {}".format(stat_dist, Q, stat_dist.dot(Q)))
 
-matrix= np.array([[1/2, 1/2, 0],
-                [1/3, 1/3, 1/3],
-                [1/2, 0, 1/2]])
+matrix= np.array([[1/3, 2/3], [1/2, 1/2]])
 
 #stationery_distribution_convergence(Q=matrix, nsim=5)
-once_s_always_s(Q=matrix)
+#once_s_always_s(Q=matrix)
