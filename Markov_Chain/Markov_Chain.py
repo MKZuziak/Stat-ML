@@ -38,16 +38,20 @@ class Markov_Chain:
         stat_dist = frequency / len(X)
         return stat_dist
 
-    def simulate_2(self, nsim=50):
-        Q = self.transition_matrix
-        for i in range(nsim):
-            Q_n = Q.dot(Q)
-            Q = Q_n
-        return Q
+    def simulate_2(self, nsim=10**4):
+        return (np.linalg.matrix_power(self.transition_matrix, nsim))[0, :]
 
 matrix= np.array([[2/5, 3/5], [3/7, 4/7]])
+
+# Initializing the Markov_Chain object.
 chain = Markov_Chain(matrix)
+
+# Calculating the chain distribution using two different methods.
 stat_dist = chain.simulate()
 stat_dist2 = chain.simulate_2()
 
-print(stat_dist, stat_dist2)
+# The starting distribution does not matter, as long as the chain runs for long enough.
+test = chain.simulate(nsim=10**4, starting_distribution=stat_dist)
+test2 = chain.simulate(nsim=10**4)
+test3 = chain.simulate(nsim=10**4, starting_distribution=[8/9, 1/9])
+print(test, test2, test3)
